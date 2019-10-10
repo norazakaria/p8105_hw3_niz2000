@@ -5,13 +5,31 @@ date: "10/14/2019"
 output: github_document
 ---
 
+```{r}
+library(tidyverse)
+```
+
+
 # Problem 1
 
 ## Load the Instacart Dataset
 ```{r}
 library(p8105.datasets)
 data("instacart")
-
+instacart
 ```
 The Instacart dataset consists of 1,384,617 observations and 17 different variables relating to instacart orders. Key variables include the order_id, product_id, reordered, days_since_prior_order, product_name, and the department. Using the dataset, you can determine information about specific ordering behavior for an individual. For example, order identifier 1 (order_id) ordered product number 49302 (product_id=49302) Bulgarian Yogurt (product_name) from the dairy eggs department (department), and reordered the product an additional time (reordered). Order identifier 36 (order_id) ordered water seltzer sparkling water (product_name) from the beverages department (department), 7 days after their last instacart order (days_since_prior_order).
+
+## How many aisles there are, and which aisles the most items are ordered from?
+```{r}
+instacart %>%
+  count(aisle)  %>%
+  arrange(desc(n)) 
+```
+
+
+## Plot demonstrating the number of items ordered in each aisle, limited to aisles with more than 10000 items ordered
+```{r}
+
+```
 
