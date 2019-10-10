@@ -26,7 +26,7 @@ instacart %>%
   count(aisle)  %>%
   arrange(desc(n)) 
 ```
-
+The most items are ordered were from the fresh vegetables and fresh fruits aisles, at 150,609 items and 150,473, respectively. The aisle with the next highest items ordered was the packaged vegetables fruits aisle, at 78,493 items.
 
 ## Plot demonstrating the number of items ordered in each aisle, limited to aisles with more than 10000 items ordered
 ```{r}
