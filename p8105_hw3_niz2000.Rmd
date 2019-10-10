@@ -30,6 +30,36 @@ The most items are ordered were from the fresh vegetables and fresh fruits aisle
 
 ## Plot demonstrating the number of items ordered in each aisle, limited to aisles with more than 10000 items ordered
 ```{r}
+Aisle_items_plot = instacart %>%
+  count(aisle) %>%
+  filter(n > 10000) %>%
+  arrange(desc(n)) %>%
+  rename(n_items_ordered = n)
 
+Aisle_items_plot %>%
+  ggplot(aes(x = reorder(aisle, -n_items_ordered), y = n_items_ordered)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(
+    title = "Items Ordered per Aisle",
+    x = "Aisle Name",
+    y = "Number of Items Ordered")
 ```
 
+## 3 most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
+```{r}
+instacart %>%
+  group_by(product_name, aisle) %>%
+  summarize(
+    n_items_ordered = n()
+    ) %>%
+  group_by(aisle) %>%
+  filter(
+    aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits"),
+    min_rank(desc(n_items_ordered)) <4 ) %>%
+  arrange(n_items_ordered, aisle) %>%
+  knitr::kable(format = 'pandoc' , caption = "Table: Most Popular Items by Aisle")
+```
+
+
+## Mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
