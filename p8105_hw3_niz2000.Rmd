@@ -63,3 +63,5 @@ instacart %>%
 
 
 ## Mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
+
+
