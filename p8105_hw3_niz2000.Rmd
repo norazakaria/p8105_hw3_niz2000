@@ -5,10 +5,10 @@ date: "10/14/2019"
 output: github_document
 ---
 
+This first step loads the tidyverse into the markdown document. 
 ```{r}
 library(tidyverse)
 ```
-
 
 # Problem 1
 
@@ -18,7 +18,7 @@ library(p8105.datasets)
 data("instacart")
 instacart
 ```
-The Instacart dataset consists of 1,384,617 observations and 17 different variables relating to instacart orders. Key variables include the order_id, product_id, reordered, days_since_prior_order, product_name, and the department. Using the dataset, you can determine information about specific ordering behavior for an individual. For example, order identifier 1 (order_id) ordered product number 49302 (product_id=49302) Bulgarian Yogurt (product_name) from the dairy eggs department (department), and reordered the product an additional time (reordered). Order identifier 36 (order_id) ordered water seltzer sparkling water (product_name) from the beverages department (department), 7 days after their last instacart order (days_since_prior_order).
+The Instacart dataset was loaded, and consists of 1,384,617 observations and 17 variables relating to instacart products and orders. Key variables include the order_id, product_id, reordered, days_since_prior_order, product_name, and the department. Using the dataset, you can determine information about specific ordering behavior for an individual. For example, order identifier 1 (order_id) ordered product number 49302 (product_id=49302) Bulgarian Yogurt (product_name) from the dairy eggs department (department), and reordered the product an additional time (reordered). Order identifier 36 (order_id) ordered water seltzer sparkling water (product_name) from the beverages department (department), 7 days after their last instacart order (days_since_prior_order).
 
 ## How many aisles there are, and which aisles the most items are ordered from?
 ```{r}
@@ -26,7 +26,7 @@ instacart %>%
   count(aisle)  %>%
   arrange(desc(n)) 
 ```
-The most items are ordered were from the fresh vegetables and fresh fruits aisles, at 150,609 items and 150,473, respectively. The aisle with the next highest items ordered was the packaged vegetables fruits aisle, at 78,493 items.
+The most items ordered were from the fresh vegetables and fresh fruits aisles, at 150,609 items and 150,473 items, respectively. The aisle with the next highest items ordered was the packaged vegetables fruits aisle, at 78,493 items.
 
 ## Plot demonstrating the number of items ordered in each aisle, limited to aisles with more than 10000 items ordered
 ```{r}
@@ -63,5 +63,54 @@ instacart %>%
 
 
 ## Mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
+```{r}
+instacart %>%
+  select(product_name, order_dow, order_hour_of_day) %>% 
+  filter(
+    product_name %in% c("Pink Lady Apples", "Coffee Ice Cream")) %>%
+  group_by(product_name, order_dow) %>%
+  summarise(mean_hour = mean(order_hour_of_day)) %>%
+  mutate(
+    day_of_week = recode(order_dow,
+      `0` = "Sunday",
+      `1` = "Monday",
+      `2` = "Tuesday",
+      `3` = "Wednesday",
+      `4` = "Thursday",
+      `5` = "Friday",
+      `6` = "Saturday")) %>%
+  select(product_name, day_of_week, mean_hour) %>% 
+  pivot_wider(
+    names_from = "day_of_week",
+    values_from = "mean_hour") %>% 
+  knitr::kable(format= 'pandoc', caption = "Table: Mean Hour Pink Lady Apples and Coffee Ice Cream are Ordered")
+```
 
+
+# Problem 2
+
+## Load BRFSS Dataset
+```{r}
+library(p8105.datasets)
+data("brfss_smart2010")
+```
+
+## Clean the BRFSS Dataset
+```{r}
+brfss_smart2010 %>%
+  janitor::clean_names() %>%
+  filter(topic == "Overall Health") %>%
+  select(-data_value_footnote_symbol, -data_value_footnote, -location_id) %>%
+  drop_na(response) %>%
+  mutate(response = as.factor(response)) %>%
+  rename(
+    state= locationabbr,
+    county= locationdesc)
+```
+BRFSS is a continuous, state-based surveillance system that collects information about modifiable risk factors for chronic diseases and other leading causes of death.
+
+
+```{r}
+
+```
 
