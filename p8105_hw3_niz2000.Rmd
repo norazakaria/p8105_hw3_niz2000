@@ -169,81 +169,45 @@ accelerometer =
   read_csv(file = "./data/accel_data.csv") %>%
   janitor::clean_names() %>%
   mutate(
-    day_type = if_else(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), "weekday", day),
-    day_type = if_else(day %in% c("Saturday", "Sunday"), "weekend", day_type)) %>%
+    day_type = if_else(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), "Weekday", day),
+    day_type = if_else(day %in% c("Saturday", "Sunday"), "Weekend", day_type)) %>%
   rename(
     day_number = day_id,
     day_of_the_week= day) %>%
   select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
 accelerometer
 ```
+R automatically converts between dbl and integer variables.
 
-
-
-
+## Using your tidied dataset, aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
 ```{r}
-accelerometer = 
-  read_csv(file = "./data/accel_data.csv") %>%
+total_activity = accelerometer %>%
   janitor::clean_names() %>%
-  mutate(day_type = case_when(day %in% c("monday", "tuesday", "wednesday", "thursday", "friday") ~ 'weekday',
-                              day %in% c("saturday", "sunday") ~ 'weekend')) %>%
-  rename(
-    day_number = day_id,
-    day_of_the_week= day) %>%
-  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
-accelerometer
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "activity_number",
+    values_to = "activity") %>%
+  group_by(day_number) %>%
+  summarise(activity_number = sum(activity)) %>%
+knitr::kable(format= 'pandoc', title = "Table: Total Activity per Day")
+total_activity
+```
+#mutate(total_activity = sum(activity_1:activity_1440)) %>%
+  #select(activity_number, day_number, total_activity) %>%
+  
+  
+## Plot
+```{r}
+activity_plot = accelerometer %>%
+  janitor::clean_names() %>%
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "activity_number",
+    values_to = "activity") %>%
+  ggplot(aes(x = activity_number, y = activity, group = day_number, color = day_of_the_week)) +
+    geom_line() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    labs(title = "Activity Throughout The Day")
+activity_plot
 ```
 
-
-```{r}
-accelerometer = 
-  read_csv(file = "./data/accel_data.csv") %>%
-  janitor::clean_names() %>%
-  mutate(
-    day_type = if_else(day %in% c("monday", "tuesday", "wednesday", "thursday", "friday"), "weekday", day),
-    day_type = if_else(day_type %in% c("saturday", "sunday"), "weekend", day_type)) %>%
-  rename(
-    day_number = day_id,
-    day_of_the_week= day) %>%
-  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
-accelerometer
-```
-
-```{r}
-accelerometer = 
-  read_csv(file = "./data/accel_data.csv") %>%
-  janitor::clean_names() %>%
-  rename(
-    day_number = day_id,
-    day_of_the_week= day) 
-accelerometer
-```
-
-```{r}
-accelerometer = 
-  read_csv(file = "./data/accel_data.csv") %>%
-  janitor::clean_names() %>%
-  rename(
-    day_number = day_id,
-    day_of_the_week= day) 
-accelerometer
-
-%>%
-  mutate(
-    day_type = if_else(day_of_the_week %in% c("saturday", "sunday"), "weekend",
-          "weekday")) %>%
-  #mutate(
-  #  day_type = if_else(day_of_the_week %in% c("saturday", "sunday"), "weekend", day_of_the_week),
-  #  day_type = if_else(day_of_the_week %in% c("monday", "tuesday", "wednesday", "thursday", "friday"), "weekday", day_of_the_week)) %>%
-  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
-accelerometer
-
-#  pivot_longer(
-   # activity_1:activity_1440,
-   # names_to = "activity_number",
-   # values_to = "activity") 
-```
-if_else(day_of_the_week %in% c("monday", "tuesday", "wednesday", "thursday", "friday"), 
-
-  mutate(day_type = if_else(day_of_the_week %in% c("saturday", "sunday"), "weekend",
-         "weekday"))
