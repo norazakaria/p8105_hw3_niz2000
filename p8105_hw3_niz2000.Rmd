@@ -162,3 +162,88 @@ responses_2006_2010
 
 
 # Problem 3
+
+## Load and Tidy the Accelerometer Data 
+```{r}
+accelerometer = 
+  read_csv(file = "./data/accel_data.csv") %>%
+  janitor::clean_names() %>%
+  mutate(
+    day_type = if_else(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), "weekday", day),
+    day_type = if_else(day %in% c("Saturday", "Sunday"), "weekend", day_type)) %>%
+  rename(
+    day_number = day_id,
+    day_of_the_week= day) %>%
+  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
+accelerometer
+```
+
+
+
+
+```{r}
+accelerometer = 
+  read_csv(file = "./data/accel_data.csv") %>%
+  janitor::clean_names() %>%
+  mutate(day_type = case_when(day %in% c("monday", "tuesday", "wednesday", "thursday", "friday") ~ 'weekday',
+                              day %in% c("saturday", "sunday") ~ 'weekend')) %>%
+  rename(
+    day_number = day_id,
+    day_of_the_week= day) %>%
+  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
+accelerometer
+```
+
+
+```{r}
+accelerometer = 
+  read_csv(file = "./data/accel_data.csv") %>%
+  janitor::clean_names() %>%
+  mutate(
+    day_type = if_else(day %in% c("monday", "tuesday", "wednesday", "thursday", "friday"), "weekday", day),
+    day_type = if_else(day_type %in% c("saturday", "sunday"), "weekend", day_type)) %>%
+  rename(
+    day_number = day_id,
+    day_of_the_week= day) %>%
+  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
+accelerometer
+```
+
+```{r}
+accelerometer = 
+  read_csv(file = "./data/accel_data.csv") %>%
+  janitor::clean_names() %>%
+  rename(
+    day_number = day_id,
+    day_of_the_week= day) 
+accelerometer
+```
+
+```{r}
+accelerometer = 
+  read_csv(file = "./data/accel_data.csv") %>%
+  janitor::clean_names() %>%
+  rename(
+    day_number = day_id,
+    day_of_the_week= day) 
+accelerometer
+
+%>%
+  mutate(
+    day_type = if_else(day_of_the_week %in% c("saturday", "sunday"), "weekend",
+          "weekday")) %>%
+  #mutate(
+  #  day_type = if_else(day_of_the_week %in% c("saturday", "sunday"), "weekend", day_of_the_week),
+  #  day_type = if_else(day_of_the_week %in% c("monday", "tuesday", "wednesday", "thursday", "friday"), "weekday", day_of_the_week)) %>%
+  select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
+accelerometer
+
+#  pivot_longer(
+   # activity_1:activity_1440,
+   # names_to = "activity_number",
+   # values_to = "activity") 
+```
+if_else(day_of_the_week %in% c("monday", "tuesday", "wednesday", "thursday", "friday"), 
+
+  mutate(day_type = if_else(day_of_the_week %in% c("saturday", "sunday"), "weekend",
+         "weekday"))
