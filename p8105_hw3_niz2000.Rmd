@@ -21,7 +21,9 @@ library(p8105.datasets)
 data("instacart")
 instacart
 ```
+
 The Instacart dataset was loaded, and consists of 1,384,617 observations and 15 variables from 131,209 unique users, where each row in the dataset is a product from an order. Key variables to interpret observations in the data and that are relevant to future analyses include the "order_id," "product_id," "reordered," "days_since_prior_order," "product_name," "aisle," and the "department" variables. Using the dataset and these key variables, information about specific ordering behavior for an individual can be determined. For example, order identifier 1 (order_id) ordered product number 49302 (product_id=49302), or Bulgarian Yogurt (product_name), from the dairy eggs department (department), and reordered the product an additional time (reordered). Order identifier 36 (order_id) ordered water seltzer sparkling water (product_name) from the beverages department (department), 7 days after their last instacart order was placed (days_since_prior_order).
+
 
 ## Aisles and Where the Most Items are Ordered From
 This next step answers the question how many aisles there are in the instacart data, as well as which aisles are the most items ordered from. This involved finding the total number of items ordered per aisle, and ordering the aisles by descending, where the aisle with the most items ordered is at the top and the aisle with the least items ordered is at the bottom. 
@@ -31,7 +33,9 @@ aisles = instacart %>%
   arrange(desc(n)) 
 aisles
 ```
-There are `r nrow(aisle)` aisles in the instacart dataset. The most items ordered were from fresh vegetables aisle at 150,609 items followed by the fresh fruits aisles at 150,473 items. The aisle with the next highest items ordered was the packaged vegetables fruits aisle, at 78,493 items.
+
+There are `r nrow(aisles)` aisles in the instacart dataset. The most items ordered were from fresh vegetables aisle at 150,609 items followed by the fresh fruits aisles at 150,473 items. The aisle with the next highest items ordered was the packaged vegetables fruits aisle, at 78,493 items.
+
 
 ## Plot of the Number of Items Ordered Per Aisle
 In this next step, I created a plot to demonstrate the number of items ordered in each aisle, limited to aisles that had more than 10,000 items ordered. To do so, I filtered the "n" variable representing the total number of items ordered per aisle to only include aisles that had more than 10000 items ordered. To arrange aisles sensibly in the plot, I reordered the aisles so that the plot would display aisles from greatest to least items ordered, from left to right. To increase readability, I formatted the aisle names vertically under each bar in the bar graph, and added labels for the graph and axes.
@@ -51,6 +55,7 @@ Aisle_items_plot = instacart %>%
 Aisle_items_plot
 ```
 
+
 ## Table Demonstrating Popular Items in 3 Different Aisles
 This next step creates a table displaying the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits,” and the number of times that each item was ordered. The three aisle names are displayed in the leftmost column, and the products and the number of times they were ordered are displayed in the middle and rightmost columns, ordered by the 3rd most popular item at the top to the most popular item at the bottom, within each of the aisles.
 ```{r}
@@ -66,7 +71,11 @@ instacart %>%
   arrange(n_items_ordered, aisle) %>%
   knitr::kable(format = 'pandoc' , caption = "Table: Most Popular Items by Aisle")
 ```
-The three most popular products in the dog food care aisle were small dog biscuits, organix chicken and brown rice recipe, and snack sticks chicken and rice recipe dog treats, ordered 26, 28, and 30 times respectively. The three most popular products in the baking ingredients aisle were cane sugar, pure baking soda, and light brown sugar, ordered 336, 387, and 499 times respectively. The three most popular products in the packaged vegetables fruits aisle were organic blueberries, organic raspberries, and organic baby spinach, ordered 4,966, 5,546, and 9,784 times respectively. 
+
+* The three most popular products in the dog food care aisle were small dog biscuits, organix chicken and brown rice recipe, and snack sticks chicken and rice recipe dog treats, ordered 26, 28, and 30 times respectively. 
+* The three most popular products in the baking ingredients aisle were cane sugar, pure baking soda, and light brown sugar, ordered 336, 387, and 499 times respectively. 
+* The three most popular products in the packaged vegetables fruits aisle were organic blueberries, organic raspberries, and organic baby spinach, ordered 4,966, 5,546, and 9,784 times respectively. 
+
 
 ## Pink Lady Apples and Coffee Ice Cream
 This step displays a table of the mean hour of the day at which the Pink Lady Apples and Coffee Ice Cream products are ordered on each day of the week. The final table displays the two products in the leftmost column, seven columns for the seven days of the week, and the mean hour of the day at which each product is ordered under the corresponding days of the week.
@@ -94,6 +103,7 @@ instacart %>%
 ```
 
 
+
 # Problem 2
 
 Problem 2 uses BRFSS data, loaded from the course datasets, and can not be found in my local data directory for the p8105_hw3_niz20000 project. BRFSS is a continuous, state-based surveillance system that collects information about modifiable risk factors for chronic diseases and other leading causes of death.
@@ -104,6 +114,7 @@ The first step for problem 2 is to load the BRFSS dataset.
 library(p8105.datasets)
 data("brfss_smart2010")
 ```
+
 
 ## Clean the BRFSS Dataset
 In order to perform analyses, the BRFSS data needs to be cleaned. The data was formatted using appropriate variable names, such as renaming the locationabbr and locationdesc variables to more clearly designate which variable corresponds to a US state, and which to a county within that state, using the anmes "location_state" and "location_county." In order to focus on the Overall Health topic, the topic variable was filtered. The response variable was converted to a factor variable, with levels ordered from "Poor" to "Excellent," and any responses that did not fall within those bounds were dropped. 
@@ -144,7 +155,9 @@ location_2010 = brfss %>%
   rename(number_sites = n)
 location_2010
 ```
+
 There were `r nrow(location_2002)` states that were observed at at least 7 county locations in 2002, and `r nrow(location_2010)` states that were observed at at least 7 county locations in 2010. 
+
 
 ## Spagheti Plot of Average Data Value for Excellent Responses Across Locations by State 
 In this step, a new dataset called "excellent_responses" limited to only "Excellent" responses was constructed, containing, year, state, and a new variable that averaged the data_value across locations within a state, called "mean_data_value." After contructing the dataset, a “spaghetti” plot of mean_data_value over the years of the study was generated, showing a line for each state.
@@ -159,6 +172,7 @@ excellent_responses = brfss %>%
     labs(title = "Graph: Average Data Value for Excellent Responses Over Time Within a State")
 excellent_responses
 ```
+
 
 ## Two-Panel Plot of Data Value for Responses in NY 
 In this step a two-panel plot is displayed for the years 2006 and 2010. In each panel, the distribution of the variable data_value each level of response (“Poor” to “Excellent”) is displayed as a boxplot, restricting the location_state of both panels to NY. 
@@ -176,12 +190,14 @@ responses_2006_2010
 ```
 
 
+
 # Problem 3
 
 Problem 3 uses accelerometer data, loaded from the accel_data CSV file found in my local data directory "Data" in the p8105_hw3_niz20000 project. Accelerometers are devices that measure “activity counts” in a short period; in this case one-minute intervals. Because accelerometers can be worn comfortably and unobtrusively, they produce around-the-clock observations.
 
 ## Load and Tidy the Accelerometer Data 
 The first step for problem 3 is to load the accel_data dataset. In order to load, tidy, and wrangle the dataset, all originally observed variables and values were preserved. However to ensure useful variable names, the day_id variable corresponding to the 35 days of observation was renamed to "day_number," and the day variable corresponding to the name of the day of the week was renamed to "day_of_the_week." An additional variable called "day_type" was created to demonstrate whether or not the day_of_the_week corresponds with a weekend or weekday. Another consideration in data cleaning to that the data has reasonable variable classes. The day of the week and day type variables are character, with the remaining week, day number, and activity variables "double" variables, which are responable as R automatically converts between dbl and integer variables. 
+
 ```{r}
 accelerometer = 
   read_csv(file = "./data/accel_data.csv") %>%
@@ -195,7 +211,9 @@ accelerometer =
   select(week, day_number, day_of_the_week, day_type, activity_1:activity_1440)
 accelerometer
 ```
-The accelerometer dataset displays five weeks of accelerometer data collected on a 63 year-old male with BMI 25, who was admitted to the Advanced Cardiac Care Center of Columbia University Medical Center and diagnosed with congestive heart failure (CHF). There are `r nrow(accelerometer)` observations in the dataset, with each corresponding to one of the 35 days of data collection on the the male participant. For each of the 35 days of observations, the week number, day number, day of the week, new day type variable (weekend vs weekday), and activity level at each minute of the day are displayed. As there are 1440 minutes in a 24 hour day, there are 1440 activity variables. The dataset has `r ncol(accelerometer)` columns, or variables with 1443 from the original dataset, and the additional 1444th variable corresponding to the newly created day_type variable. 
+
+The accelerometer dataset displays five weeks of accelerometer data collected on a 63 year-old male with BMI 25, who was admitted to the Advanced Cardiac Care Center of Columbia University Medical Center and diagnosed with congestive heart failure (CHF). There are `r nrow(accelerometer)` observations in the dataset, with each corresponding to one of the 35 days of data collection on the the male participant. For each of the 35 days of observations, the week number, day number, day of the week, new day type variable (weekend vs weekday), and activity level at each minute of the day are displayed. As there are 1440 minutes in a 24 hour day, there are 1440 activity variables. The dataset has `r ncol(accelerometer)` columns, or variables with 1443 from the original dataset, and the additional 1444th variable corresponding to the newly created day_type variable
+
 
 ## Create a Table of Total Activity Per Day
 In this step, I used the tidied accelerometer dataset, and aggregated activity accross each the 1440 minutes of each of the 35 days to create a new total_activity variable. I created a table demonstrating these day_number and these totals. I also included the day_of_the_week and the new variable day_type in the table, hypothesizing that perhaps there is a trend in activity level by day of the week or and whether or not there is a trend in activity on the weekend compared to on weekdays. 
@@ -208,10 +226,12 @@ total_activity = accelerometer %>%
     values_to = "activity") %>%
   group_by(day_number, day_of_the_week, day_type) %>%
   summarise(total_activity = sum(activity)) %>%
-knitr::kable(format= 'pandoc', title = "Table: Total Activity per Day")
+knitr::kable(format= 'pandoc', caption = "Table: Total Activity per Day")
 total_activity
 ```
-Describe trends or patterns!!
+
+In analysing the table of total_activity by day observed, there does not appear to be any distinct trends in total_activity as time goes on. However with the addition of the day_of_the_week there does appear to be several patterns in total_activity depending on the day of the week. For example, total activity among the middle three days of the weekday (Tuesdays, Wednesdays, and Thursdays) are fairly consistent, ranging from approximately 300,000 to 450,000 units. The other two weekdays adjacent to the weekend (Mondays and Fridays), and weekend days (Saturdays and Sundays) are not as consistent, with total activity ranging from as low as 1,440.00 to as high as 685,910.00.
+
   
 ## Plot of 24-Hour Activity for Each Observed Day
 In this last step in problem 3, I made a plot to use accelerometer data to inspect activity over the course of each day of observation in the study. This single-panel plot displays the 24-hour activity time courses for each of the 35 days, and uses a different color to indicate which day of the week that observation took place.
@@ -222,10 +242,18 @@ activity_plot = accelerometer %>%
     activity_1:activity_1440,
     names_to = "activity_number",
     values_to = "activity") %>%
-  ggplot(aes(x = activity_number, y = activity, group = day_number, color = day_of_the_week)) +
+  separate(activity_number, into = c("activity_name", "minute")) %>%
+  mutate(minute = as.numeric(minute)) %>%
+  arrange(minute) %>%
+  ggplot(aes(x = minute, y = activity, group = day_number, color = day_of_the_week)) +
     geom_line() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-    labs(title = "Activity Throughout The Day")
+    labs(title = "Activity Throughout The Day") +
+    scale_x_continuous(
+      name = "Time of Day",
+      breaks = c(1, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660, 720, 780, 840, 900, 960, 1020, 1080, 1140, 1200, 1260, 1320, 1380, 1440),
+      labels = c("12am", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm", "12am")) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 activity_plot
 ```
+
 Describe in words any patterns or conclusions you can make based on this graph!!
