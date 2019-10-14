@@ -12,7 +12,7 @@ library(tidyverse)
 
 # Problem 1
 
-Problem 1 uses Instacart Online Grocery Shopping Dataset from 2017, loaded from the course datasets, and not in my local data directory for the p8105_hw3_niz20000 project.
+Problem 1 uses the Instacart Online Grocery Shopping Dataset from 2017, loaded from the course datasets, and not in my local data directory for the p8105_hw3_niz20000 project.
 
 ## Load the Instacart Dataset
 The first step for problem 1 is to load the instacart dataset. 
@@ -22,7 +22,7 @@ data("instacart")
 instacart
 ```
 
-The Instacart dataset was loaded, and consists of 1,384,617 observations and 15 variables from 131,209 unique users, where each row in the dataset is a product from an order. Key variables to interpret observations in the data and that are relevant to future analyses include the "order_id," "product_id," "reordered," "days_since_prior_order," "product_name," "aisle," and the "department" variables. Using the dataset and these key variables, information about specific ordering behavior for an individual can be determined. For example, order identifier 1 (order_id) ordered product number 49302 (product_id=49302), or Bulgarian Yogurt (product_name), from the dairy eggs department (department), and reordered the product an additional time (reordered). Order identifier 36 (order_id) ordered water seltzer sparkling water (product_name) from the beverages department (department), 7 days after their last instacart order was placed (days_since_prior_order).
+The Instacart dataset was loaded, and consists of `r nrow(instacart)` observations and `r ncol(instacart)` variables from 131,209 unique users, where each observation, or row, in the dataset represents a product from an order. Key variables used to interpret observations in the data and that are relevant to future analyses in this problem include the "order_id," "product_id," "reordered," "days_since_prior_order," "product_name," "aisle," and the "department" variables. Using the dataset and these key variables, information about specific ordering behavior for an individual can be determined. For example, order identifier 1 (order_id) ordered product number 49302 (product_id=49302), or Bulgarian Yogurt (product_name), from the dairy eggs department (department), and reordered the product an additional time (reordered). Order identifier 36 (order_id) ordered water seltzer sparkling water (product_name) from the beverages department (department), 7 days after their last instacart order was placed (days_since_prior_order).
 
 
 ## Aisles and Where the Most Items are Ordered From
