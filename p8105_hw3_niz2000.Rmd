@@ -16,7 +16,7 @@ Problem 1 uses Instacart Online Grocery Shopping Dataset from 2017, loaded from 
 
 ## Load the Instacart Dataset
 The first step for problem 1 is to load the instacart dataset. 
-```{r}
+```{r instacart}
 library(p8105.datasets)
 data("instacart")
 instacart
@@ -27,7 +27,7 @@ The Instacart dataset was loaded, and consists of 1,384,617 observations and 15 
 
 ## Aisles and Where the Most Items are Ordered From
 This next step answers the question how many aisles there are in the instacart data, as well as which aisles are the most items ordered from. This involved finding the total number of items ordered per aisle, and ordering the aisles by descending, where the aisle with the most items ordered is at the top and the aisle with the least items ordered is at the bottom. 
-```{r}
+```{r aisles}
 aisles = instacart %>%
   count(aisle)  %>%
   arrange(desc(n)) 
@@ -39,7 +39,7 @@ There are `r nrow(aisles)` aisles in the instacart dataset. The most items order
 
 ## Plot of the Number of Items Ordered Per Aisle
 In this next step, I created a plot to demonstrate the number of items ordered in each aisle, limited to aisles that had more than 10,000 items ordered. To do so, I filtered the "n" variable representing the total number of items ordered per aisle to only include aisles that had more than 10000 items ordered. To arrange aisles sensibly in the plot, I reordered the aisles so that the plot would display aisles from greatest to least items ordered, from left to right. To increase readability, I formatted the aisle names vertically under each bar in the bar graph, and added labels for the graph and axes.
-```{r}
+```{r Orders_per_Aisle}
 Aisle_items_plot = instacart %>%
   count(aisle) %>%
   filter(n > 10000) %>%
@@ -58,7 +58,7 @@ Aisle_items_plot
 
 ## Table Demonstrating Popular Items in 3 Different Aisles
 This next step creates a table displaying the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits,” and the number of times that each item was ordered. The three aisle names are displayed in the leftmost column, and the products and the number of times they were ordered are displayed in the middle and rightmost columns, ordered by the 3rd most popular item at the top to the most popular item at the bottom, within each of the aisles.
-```{r}
+```{r popular_items}
 instacart %>%
   group_by(aisle, product_name) %>%
   summarize(
@@ -79,7 +79,7 @@ instacart %>%
 
 ## Pink Lady Apples and Coffee Ice Cream
 This step displays a table of the mean hour of the day at which the Pink Lady Apples and Coffee Ice Cream products are ordered on each day of the week. The final table displays the two products in the leftmost column, seven columns for the seven days of the week, and the mean hour of the day at which each product is ordered under the corresponding days of the week.
-```{r}
+```{r apples_and_icecream}
 instacart %>%
   select(product_name, order_dow, order_hour_of_day) %>% 
   filter(
@@ -110,7 +110,7 @@ Problem 2 uses BRFSS data, loaded from the course datasets, and can not be found
 
 ## Load BRFSS Dataset
 The first step for problem 2 is to load the BRFSS dataset. 
-```{r}
+```{r brfss}
 library(p8105.datasets)
 data("brfss_smart2010")
 ```
@@ -118,7 +118,7 @@ data("brfss_smart2010")
 
 ## Clean the BRFSS Dataset
 In order to perform analyses, the BRFSS data needs to be cleaned. The data was formatted using appropriate variable names, such as renaming the locationabbr and locationdesc variables to more clearly designate which variable corresponds to a US state, and which to a county within that state, using the anmes "location_state" and "location_county." In order to focus on the Overall Health topic, the topic variable was filtered. The response variable was converted to a factor variable, with levels ordered from "Poor" to "Excellent," and any responses that did not fall within those bounds were dropped. 
-```{r}
+```{r brfss_tidy}
 brfss = brfss_smart2010 %>%
   janitor::clean_names() %>%
   filter(topic == "Overall Health") %>%
@@ -136,7 +136,7 @@ brfss
 
 ## States Observed at 7 or More Locations
 In this step, the brfss data was used to determine with which states were observed at at least 7 county locations in the years 2002 and 2010. The first section of code corresponds to 2002 while the second code corresponds to 2010, through filtering the year variable accordingly. 
-```{r}
+```{r locations_observed}
 # Restricting to 2002
 location_2002 = brfss %>%
   filter(year == "2002") %>%
@@ -161,7 +161,7 @@ There were `r nrow(location_2002)` states that were observed at at least 7 count
 
 ## Spagheti Plot of Average Data Value for Excellent Responses Across Locations by State 
 In this step, a new dataset called "excellent_responses" limited to only "Excellent" responses was constructed, containing, year, state, and a new variable that averaged the data_value across locations within a state, called "mean_data_value." After contructing the dataset, a “spaghetti” plot of mean_data_value over the years of the study was generated, showing a line for each state.
-```{r}
+```{r excellent_responses}
 excellent_responses = brfss %>%
   filter(response == "Excellent") %>%
   group_by(year, location_state) %>%
@@ -176,7 +176,7 @@ excellent_responses
 
 ## Two-Panel Plot of Data Value for Responses in NY 
 In this step a two-panel plot is displayed for the years 2006 and 2010. In each panel, the distribution of the variable data_value each level of response (“Poor” to “Excellent”) is displayed as a boxplot, restricting the location_state of both panels to NY. 
-```{r}
+```{r responses_boxplots}
 responses_2006_2010 = brfss %>%
   filter(location_state == "NY",
         year %in% c("2006", "2010")) %>%
@@ -198,7 +198,7 @@ Problem 3 uses accelerometer data, loaded from the accel_data CSV file found in 
 ## Load and Tidy the Accelerometer Data 
 The first step for problem 3 is to load the accel_data dataset. In order to load, tidy, and wrangle the dataset, all originally observed variables and values were preserved. However to ensure useful variable names, the day_id variable corresponding to the 35 days of observation was renamed to "day_number," and the day variable corresponding to the name of the day of the week was renamed to "day_of_the_week." An additional variable called "day_type" was created to demonstrate whether or not the day_of_the_week corresponds with a weekend or weekday. Another consideration in data cleaning to that the data has reasonable variable classes. The day of the week and day type variables are character, with the remaining week, day number, and activity variables "double" variables, which are responable as R automatically converts between dbl and integer variables. 
 
-```{r}
+```{r accelerometer_tidy}
 accelerometer = 
   read_csv(file = "./data/accel_data.csv") %>%
   janitor::clean_names() %>%
@@ -217,7 +217,7 @@ The accelerometer dataset displays five weeks of accelerometer data collected on
 
 ## Create a Table of Total Activity Per Day
 In this step, I used the tidied accelerometer dataset, and aggregated activity accross each the 1440 minutes of each of the 35 days to create a new total_activity variable. I created a table demonstrating these day_number and these totals. I also included the day_of_the_week and the new variable day_type in the table, hypothesizing that perhaps there is a trend in activity level by day of the week or and whether or not there is a trend in activity on the weekend compared to on weekdays. 
-```{r}
+```{r total_activity}
 total_activity = accelerometer %>%
   janitor::clean_names() %>%
   pivot_longer(
@@ -235,7 +235,7 @@ In analysing the table of total_activity by day observed, there does not appear 
   
 ## Plot of 24-Hour Activity for Each Observed Day
 In this last step in problem 3, I made a plot to use accelerometer data to inspect activity over the course of each day of observation in the study. This single-panel plot displays the 24-hour activity time courses for each of the 35 days, and uses a different color to indicate which day of the week that observation took place.
-```{r}
+```{r 24_hour_plot}
 activity_plot = accelerometer %>%
   janitor::clean_names() %>%
   pivot_longer(
